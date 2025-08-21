@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI数字人技术架构图集 - 交互式查看器</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', Arial, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* 动态背景 */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0a0e27, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            z-index: -2;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 4s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* 主容器 */
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            width: 300px;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 30px 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #64ffda;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(100, 255, 218, 0.05) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-list li {
+            margin-bottom: 8px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            color: #b0bec5;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+            transition: left 0.3s ease;
+        }
+        
+        .nav-link:hover::before {
+            left: 0;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            transform: translateX(5px);
+            border-left: 3px solid #64ffda;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            padding: 40px;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #64ffda 0%, #00bcd4 50%, #2196f3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
+        .page-subtitle {
+            color: #90a4ae;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        /* 架构展示区 */
+        .architecture-viewer {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .architecture-viewer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #64ffda, #00bcd4, #2196f3, #9c27b0, #e91e63);
+            background-size: 400% 100%;
+            animation: borderFlow 8s ease infinite;
+        }
+        
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .current-architecture {
+            min-height: 500px;
+        }
+        
+        .arch-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 15px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+        
+        .layer-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .layer-name {
+            width: 120px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 10px;
+            font-size: 12px;
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .layer-name::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: layerShimmer 3s infinite;
+        }
+        
+        @keyframes layerShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .layer-components {
+            flex: 1;
+            display: flex;
+            gap: 15px;
+            margin-left: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-component {
+            padding: 12px 18px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 12px;
+            min-width: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tech-component::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tech-component:hover::before {
+            opacity: 1;
+        }
+        
+        .tech-component:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        /* 层级颜色 */
+        .layer-row:nth-child(1) .tech-component { 
+            background: linear-gradient(135deg, rgba(255, 154, 158, 0.3) 0%, rgba(254, 207, 239, 0.3) 100%);
+            color: #ff9a9e;
+            border-color: rgba(255, 154, 158, 0.5);
+        }
+        
+        .layer-row:nth-child(2) .tech-component { 
+            background: linear-gradient(135deg, rgba(255, 236, 210, 0.3) 0%, rgba(252, 182, 159, 0.3) 100%);
+            color: #fcb69f;
+            border-color: rgba(252, 182, 159, 0.5);
+        }
+        
+        .layer-row:nth-child(3) .tech-component { 
+            background: linear-gradient(135deg, rgba(255, 249, 196, 0.3) 0%, rgba(249, 202, 36, 0.3) 100%);
+            color: #f9ca24;
+            border-color: rgba(249, 202, 36, 0.5);
+        }
+        
+        .layer-row:nth-child(4) .tech-component { 
+            background: linear-gradient(135deg, rgba(195, 240, 202, 0.3) 0%, rgba(92, 184, 92, 0.3) 100%);
+            color: #5cb85c;
+            border-color: rgba(92, 184, 92, 0.5);
+        }
+        
+        .layer-row:nth-child(5) .tech-component { 
+            background: linear-gradient(135deg, rgba(168, 230, 207, 0.3) 0%, rgba(52, 152, 219, 0.3) 100%);
+            color: #3498db;
+            border-color: rgba(52, 152, 219, 0.5);
+        }
+        
+        .layer-row:nth-child(6) .tech-component { 
+            background: linear-gradient(135deg, rgba(209, 196, 233, 0.3) 0%, rgba(123, 31, 162, 0.3) 100%);
+            color: #7b1fa2;
+            border-color: rgba(123, 31, 162, 0.5);
+        }
+        
+        /* 技术说明面板 */
+        .tech-panel {
+            margin-top: 30px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            position: relative;
+        }
+        
+        .tech-panel h4 {
+            color: #64ffda;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .tech-panel ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tech-panel li {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(100, 255, 218, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #64ffda;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-panel li:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .tech-panel strong {
+            color: #64ffda;
+            font-weight: 600;
+        }
+        
+        /* 控制面板 */
+        .control-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+        
+        .control-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            color: #64ffda;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .control-btn:hover {
+            background: rgba(100, 255, 218, 0.1);
+            border-color: #64ffda;
+            transform: translateY(-2px);
+        }
+        
+        .control-btn.active {
+            background: #64ffda;
+            color: #0a0e27;
+        }
+        
+        /* 切换按钮 */
+        .toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(100, 255, 218, 0.2);
+            border: 1px solid #64ffda;
+            border-radius: 50%;
+            color: #64ffda;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-sidebar:hover {
+            background: rgba(100, 255, 218, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .control-panel {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态背景 -->
+    <div class="animated-bg"></div>
+    <div class="stars"></div>
+    
+    <!-- 侧边栏切换按钮 -->
+    <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
+    
+    <div class="main-container">
+        <!-- 侧边栏导航 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-title">架构导航</div>
+            <ul class="nav-list">
+                <li><a href="#" class="nav-link active" onclick="showArchitecture(0)">模版配置架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(1)">场景管理架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(2)">真人驱动架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(3)">互动素材架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(4)">硬件扩展架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(5)">营销预测架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(6)">策略优化架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(7)">稳定性架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(8)">权限日志架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(9)">场景升级架构</a></li>
+                <li><a href="#" class="nav-link" onclick="showArchitecture(10)">系统能力架构</a></li>
+            </ul>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content" id="mainContent">
+            <div class="page-header">
+                <h1 class="page-title">AI数字人技术架构图集</h1>
+                <p class="page-subtitle">交互式架构查看器 - 探索AI数字人的技术蓝图</p>
+            </div>
+            
+            <!-- 架构展示区 -->
+            <div class="architecture-viewer">
+                <div class="current-architecture" id="currentArchitecture">
+                    <div class="arch-title">24.2.1 模版及基础信息配置功能架构</div>
+                    
+                    <div class="layer-row">
+                        <div class="layer-name">应用层</div>
+                        <div class="layer-components">
+                            <div class="tech-component">模版管理界面</div>
+                            <div class="tech-component">配置管理控制台</div>
+                            <div class="tech-component">预览与测试</div>
+                            <div class="tech-component">版本管理</div>
+                        </div>
+                    </div>
+                    
+                    <div class="layer-row">
+                        <div class="layer-name">应用框架层</div>
+                        <div class="layer-components">
+                            <div class="tech-component">模版引擎</div>
+                            <div class="tech-component">配置解析器</div>
+                            <div class="tech-component">验证框架</div>
+                        </div>
+                    </div>
+                    
+                    <div class="layer-row">
+                        <div class="layer-name">应用技术层</div>
+                        <div class="layer-components">
+                            <div class="tech-component">JSON Schema验证</div>
+                            <div class="tech-component">模版渲染引擎</div>
+                            <div class="tech-component">配置热更新</div>
+                            <div class="tech-component">缓存管理</div>
+                        </div>
+                    </div>
+                    
+                    <div class="layer-row">
+                        <div class="layer-name">模型层</div>
+                        <div class="layer-components">
+                            <div class="tech-component">配置模型</div>
+                            <div class="tech-component">模版库</div>
+                            <div class="tech-component">元数据管理</div>
+                        </div>
+                    </div>
+                    
+                    <div class="layer-row">
+                        <div class="layer-name">云原生层</div>
+                        <div class="layer-components">
+                            <div class="tech-component">容器化部署</div>
+                            <div class="tech-component">配置中心</div>
+                        </div>
+                    </div>
+                    
+                    <div class="layer-row">
+                        <div class="layer-name">基础设施层</div>
+                        <div class="layer-components">
+                            <div class="tech-component">数据库存储</div>
+                            <div class="tech-component">文件存储</div>
+                            <div class="tech-component">缓存系统</div>
+                            <div class="tech-component">监控告警</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-panel">
+                    <h4>🚀 技术说明</h4>
+                    <ul>
+                        <li><strong>模版引擎</strong>：基于Jinja2/Mustache实现动态模版渲染，支持条件判断和循环</li>
+                        <li><strong>配置解析器</strong>：支持YAML/JSON格式配置文件，提供配置校验和类型检查</li>
+                        <li><strong>热更新机制</strong>：基于文件监听和消息队列实现配置实时生效</li>
+                        <li><strong>版本管理</strong>：Git集成的版本控制，支持配置回滚和分支管理</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 控制面板 -->
+    <div class="control-panel">
+        <button class="control-btn active" onclick="setViewMode('detailed')">详细视图</button>
+        <button class="control-btn" onclick="setViewMode('compact')">紧凑视图</button>
+        <button class="control-btn" onclick="setViewMode('focus')">专注模式</button>
+        <button class="control-btn" onclick="toggleAnimation()">动画效果</button>
+    </div>
+    
+    <script>
+        // 架构数据
+        const architectures = [
+            {
+                title: "24.2.1 模版及基础信息配置功能架构",
+                layers: [
+                    { name: "应用层", components: ["模版管理界面", "配置管理控制台", "预览与测试", "版本管理"] },
+                    { name: "应用框架层", components: ["模版引擎", "配置解析器", "验证框架"] },
+                    { name: "应用技术层", components: ["JSON Schema验证", "模版渲染引擎", "配置热更新", "缓存管理"] },
+                    { name: "模型层", components: ["配置模型", "模版库", "元数据管理"] },
+                    { name: "云原生层", components: ["容器化部署", "配置中心"] },
+                    { name: "基础设施层", components: ["数据库存储", "文件存储", "缓存系统", "监控告警"] }
+                ],
+                description: [
+                    "模版引擎：基于Jinja2/Mustache实现动态模版渲染，支持条件判断和循环",
+                    "配置解析器：支持YAML/JSON格式配置文件，提供配置校验和类型检查",
+                    "热更新机制：基于文件监听和消息队列实现配置实时生效",
+                    "版本管理：Git集成的版本控制，支持配置回滚和分支管理"
+                ]
+            },
+            {
+                title: "24.2.2 场景管理功能架构",
+                layers: [
+                    { name: "应用层", components: ["场景编辑器", "场景库管理", "场景调度台", "性能监控"] },
+                    { name: "应用框架层", components: ["场景编排引擎", "状态机管理", "事件驱动框架"] },
+                    { name: "应用技术层", components: ["场景DSL解析", "动作执行器", "条件判断引擎", "场景切换"] },
+                    { name: "模型层", components: ["场景模型", "行为树", "对话流程"] },
+                    { name: "云原生层", components: ["微服务架构", "服务发现"] },
+                    { name: "基础设施层", components: ["场景存储", "状态存储", "消息队列", "定时调度"] }
+                ],
+                description: [
+                    "场景编排引擎：基于有向无环图(DAG)的场景流程编排，支持并行和串行执行",
+                    "状态机管理：使用XState实现复杂场景状态转换和生命周期管理",
+                    "场景DSL：自定义领域特定语言，简化场景配置和维护",
+                    "事件驱动：基于发布订阅模式的松耦合事件处理机制"
+                ]
+            }
+            // 可以继续添加其他架构数据...
+        ];
+        
+        let currentIndex = 0;
+        let animationsEnabled = true;
+        
+        // 创建星空背景
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 显示指定架构
+        function showArchitecture(index) {
+            if (index >= 0 && index < architectures.length) {
+                currentIndex = index;
+                const arch = architectures[index];
+                
+                // 更新导航状态
+                document.querySelectorAll('.nav-link').forEach((link, i) => {
+                    link.classList.toggle('active', i === index);
+                });
+                
+                // 更新架构内容
+                const container = document.getElementById('currentArchitecture');
+                container.innerHTML = `
+                    <div class="arch-title">${arch.title}</div>
+                    ${arch.layers.map((layer, layerIndex) => `
+                        <div class="layer-row" style="animation-delay: ${layerIndex * 0.1}s">
+                            <div class="layer-name">${layer.name}</div>
+                            <div class="layer-components">
+                                ${layer.components.map((comp, compIndex) => `
+                                    <div class="tech-component" style="animation-delay: ${(layerIndex * 0.1) + (compIndex * 0.05)}s">${comp}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                `;
+                
+                // 更新技术说明
+                const techPanel = document.querySelector('.tech-panel ul');
+                techPanel.innerHTML = arch.description.map(desc => `<li>${desc}</li>`).join('');
+                
+                // 重新绑定事件
+                bindComponentEvents();
+            }
+        }
+        
+        // 绑定组件事件
+        function bindComponentEvents() {
+            document.querySelectorAll('.tech-component').forEach(component => {
+                component.addEventListener('mouseenter', function() {
+                    if (animationsEnabled) {
+                        this.style.transform = 'translateY(-5px) scale(1.05)';
+                        this.style.zIndex = '10';
+                        
+                        // 同层组件淡化效果
+                        const siblings = this.parentElement.querySelectorAll('.tech-component');
+                        siblings.forEach(sibling => {
+                            if (sibling !== this) {
+                                sibling.style.opacity = '0.5';
+                            }
+                        });
+                    }
+                });
+                
+                component.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.zIndex = '';
+                    
+                    const siblings = this.parentElement.querySelectorAll('.tech-component');
+                    siblings.forEach(sibling => {
+                        sibling.style.opacity = '';
+                    });
+                });
+            });
+        }
+        
+        // 切换侧边栏
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('hidden');
+            if (sidebar.classList.contains('hidden')) {
+                mainContent.classList.add('expanded');
+            } else {
+                mainContent.classList.remove('expanded');
+            }
+        }
+        
+        // 设置视图模式
+        function setViewMode(mode) {
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            const components = document.querySelectorAll('.tech-component');
+            const layers = document.querySelectorAll('.layer-row');
+            
+            switch(mode) {
+                case 'detailed':
+                    components.forEach(comp => {
+                        comp.style.fontSize = '12px';
+                        comp.style.padding = '12px 18px';
+                    });
+                    break;
+                case 'compact':
+                    components.forEach(comp => {
+                        comp.style.fontSize = '10px';
+                        comp.style.padding = '8px 12px';
+                    });
+                    break;
+                case 'focus':
+                    layers.forEach((layer, index) => {
+                        layer.style.opacity = index < 3 ? '1' : '0.3';
+                    });
+                    break;
+            }
+        }
+        
+        // 切换动画
+        function toggleAnimation() {
+            animationsEnabled = !animationsEnabled;
+            const btn = event.target;
+            btn.textContent = animationsEnabled ? '动画效果' : '静态模式';
+            
+            if (!animationsEnabled) {
+                document.querySelectorAll('*').forEach(el => {
+                    el.style.animation = 'none';
+                });
+            }
+        }
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            bindComponentEvents();
+            
+            // 键盘快捷键
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        if (currentIndex > 0) showArchitecture(currentIndex - 1);
+                        break;
+                    case 'ArrowRight':
+                        if (currentIndex < architectures.length - 1) showArchitecture(currentIndex + 1);
+                        break;
+                    case 'Escape':
+                        toggleSidebar();
+                        break;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI数字人技术架构图集 - 精美展示版</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientAnimation {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* 全屏粒子背景 */
+        .background-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: floatParticle 8s ease-in-out infinite;
+        }
+        
+        @keyframes floatParticle {
+            0%, 100% { 
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% { 
+                transform: translateY(-100vh) translateX(50px) rotate(360deg);
+                opacity: 0.8;
+            }
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .main-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 60px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: titleShimmer 4s infinite;
+        }
+        
+        @keyframes titleShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .architecture-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.8),
+                0 0 0 1px rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .architecture-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+            background-size: 400% 100%;
+            animation: cardTopGradient 10s ease infinite;
+        }
+        
+        @keyframes cardTopGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .architecture-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.8),
+                0 0 0 1px rgba(255,255,255,0.4);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border-left: 5px solid #3498db;
+            position: relative;
+        }
+        
+        .architecture-mini {
+            min-height: 350px;
+            position: relative;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .mini-layer {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            position: relative;
+            animation: slideInRight 0.6s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .mini-label {
+            width: 100px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 8px;
+            font-size: 11px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mini-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: miniShimmer 2s infinite;
+        }
+        
+        @keyframes miniShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .mini-components {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+            margin-left: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .mini-component {
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 10px;
+            min-width: 80px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .mini-component::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mini-component:hover::before {
+            opacity: 1;
+        }
+        
+        .mini-component:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 5;
+        }
+        
+        /* 精美的颜色方案 */
+        .app-layer { 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #8e2de2;
+        }
+        
+        .framework-layer { 
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #d84315;
+        }
+        
+        .tech-layer { 
+            background: linear-gradient(135deg, #fff9c4 0%, #f9ca24 100%);
+            color: #f39801;
+        }
+        
+        .model-layer { 
+            background: linear-gradient(135deg, #c3f0ca 0%, #5cb85c 100%);
+            color: #2d5a2d;
+        }
+        
+        .cloud-layer { 
+            background: linear-gradient(135deg, #a8e6cf 0%, #3498db 100%);
+            color: #1e3a8a;
+        }
+        
+        .infra-layer { 
+            background: linear-gradient(135deg, #d1c4e9 0%, #7b1fa2 100%);
+            color: #4a148c;
+        }
+        
+        .tech-highlights {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #17a2b8;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-highlights::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e9ecef' fill-opacity='0.2'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.5;
+        }
+        
+        .tech-highlights h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tech-list li {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            color: #555;
+            line-height: 1.5;
+            border-left: 3px solid #17a2b8;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-list li:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .tech-list strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        /* 层级渐变指示器 */
+        .mini-layer:nth-child(1) .mini-label { 
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+        .mini-layer:nth-child(2) .mini-label { 
+            background: linear-gradient(135deg, #ff922b 0%, #fc7303 100%);
+            box-shadow: 0 4px 12px rgba(255, 146, 43, 0.4);
+        }
+        .mini-layer:nth-child(3) .mini-label { 
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+        }
+        .mini-layer:nth-child(4) .mini-label { 
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+        .mini-layer:nth-child(5) .mini-label { 
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+        }
+        .mini-layer:nth-child(6) .mini-label { 
+            background: linear-gradient(135deg, #6f42c1 0%, #5a2d91 100%);
+            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.4);
+        }
+        
+        /* 悬浮工具栏 */
+        .floating-toolbar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .toolbar-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #2c3e50;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toolbar-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .toolbar-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* 导航菜单 */
+        .nav-menu {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item {
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #bdc3c7;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-item.active {
+            background: #3498db;
+            transform: scale(1.3);
+        }
+        
+        .nav-item:hover {
+            background: #3498db;
+            transform: scale(1.2);
+        }
+        
+        .nav-item::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            opacity: 1;
+            left: 30px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 28px;
+                padding: 25px;
+            }
+            
+            .mini-layer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .mini-label {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .mini-components {
+                margin-left: 0;
+                justify-content: center;
+            }
+            
+            .floating-toolbar {
+                top: auto;
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .floating-toolbar,
+            .nav-menu {
+                display: none;
+            }
+            
+            .architecture-card {
+                background: white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                page-break-inside: avoid;
+                margin-bottom: 30px;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loaded .loading-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- 背景粒子 -->
+    <div class="background-particles"></div>
+    
+    <!-- 悬浮工具栏 -->
+    <div class="floating-toolbar">
+        <button class="toolbar-btn" onclick="toggleTheme()" title="切换主题">🌙</button>
+        <button class="toolbar-btn" onclick="toggleFullscreen()" title="全屏模式">⛶</button>
+        <button class="toolbar-btn" onclick="exportPDF()" title="导出PDF">📄</button>
+        <button class="toolbar-btn" onclick="showOverview()" title="总览模式">🔍</button>
+    </div>
+    
+    <!-- 导航菜单 -->
+    <div class="nav-menu">
+        <div class="nav-item active" data-title="模版配置" onclick="scrollToSection(0)"></div>
+        <div class="nav-item" data-title="场景管理" onclick="scrollToSection(1)"></div>
+        <div class="nav-item" data-title="真人驱动" onclick="scrollToSection(2)"></div>
+        <div class="nav-item" data-title="互动素材" onclick="scrollToSection(3)"></div>
+        <div class="nav-item" data-title="硬件扩展" onclick="scrollToSection(4)"></div>
+        <div class="nav-item" data-title="营销预测" onclick="scrollToSection(5)"></div>
+        <div class="nav-item" data-title="策略优化" onclick="scrollToSection(6)"></div>
+        <div class="nav-item" data-title="稳定性" onclick="scrollToSection(7)"></div>
+        <div class="nav-item" data-title="权限日志" onclick="scrollToSection(8)"></div>
+        <div class="nav-item" data-title="场景升级" onclick="scrollToSection(9)"></div>
+        <div class="nav-item" data-title="系统能力" onclick="scrollToSection(10)"></div>
+    </div>
+    
+    <div class="container">
+        <div class="main-title">AI数字人技术架构图集</div>
+        
+        <div class="architecture-grid">
+            <!-- 24.2.1 模版及基础信息配置 -->
+            <div class="architecture-card" data-section="0">
+                <div class="card-title">24.2.1 模版及基础信息配置功能架构</div>
+                <div class="architecture-mini">
+                    <div class="mini-layer">
+                        <div class="mini-label">应用层</div>
+                        <div class="mini-components">
+                            <div class="mini-component app-layer">模版管理界面</div>
+                            <div class="mini-component app-layer">配置控制台</div>
+                            <div class="mini-component app-layer">预览测试</div>
+                            <div class="mini-component app-layer">版本管理</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">框架层</div>
+                        <div class="mini-components">
+                            <div class="mini-component framework-layer">模版引擎</div>
+                            <div class="mini-component framework-layer">配置解析器</div>
+                            <div class="mini-component framework-layer">验证框架</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">技术层</div>
+                        <div class="mini-components">
+                            <div class="mini-component tech-layer">Schema验证</div>
+                            <div class="mini-component tech-layer">渲染引擎</div>
+                            <div class="mini-component tech-layer">热更新</div>
+                            <div class="mini-component tech-layer">缓存管理</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">模型层</div>
+                        <div class="mini-components">
+                            <div class="mini-component model-layer">配置模型</div>
+                            <div class="mini-component model-layer">模版库</div>
+                            <div class="mini-component model-layer">元数据管理</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">云原生</div>
+                        <div class="mini-components">
+                            <div class="mini-component cloud-layer">容器化部署</div>
+                            <div class="mini-component cloud-layer">配置中心</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">基础层</div>
+                        <div class="mini-components">
+                            <div class="mini-component infra-layer">数据库</div>
+                            <div class="mini-component infra-layer">文件存储</div>
+                            <div class="mini-component infra-layer">缓存系统</div>
+                            <div class="mini-component infra-layer">监控告警</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-highlights">
+                    <h4>💡 核心技术亮点</h4>
+                    <ul class="tech-list">
+                        <li><strong>智能模版引擎</strong>：支持动态渲染和条件判断</li>
+                        <li><strong>热更新机制</strong>：配置实时生效，零停机更新</li>
+                        <li><strong>版本控制</strong>：Git集成，支持回滚和分支管理</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 24.2.2 场景管理 -->
+            <div class="architecture-card" data-section="1">
+                <div class="card-title">24.2.2 场景管理功能架构</div>
+                <div class="architecture-mini">
+                    <div class="mini-layer">
+                        <div class="mini-label">应用层</div>
+                        <div class="mini-components">
+                            <div class="mini-component app-layer">场景编辑器</div>
+                            <div class="mini-component app-layer">场景库管理</div>
+                            <div class="mini-component app-layer">调度台</div>
+                            <div class="mini-component app-layer">性能监控</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">框架层</div>
+                        <div class="mini-components">
+                            <div class="mini-component framework-layer">编排引擎</div>
+                            <div class="mini-component framework-layer">状态机</div>
+                            <div class="mini-component framework-layer">事件驱动</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">技术层</div>
+                        <div class="mini-components">
+                            <div class="mini-component tech-layer">DSL解析</div>
+                            <div class="mini-component tech-layer">动作执行器</div>
+                            <div class="mini-component tech-layer">条件引擎</div>
+                            <div class="mini-component tech-layer">场景切换</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">模型层</div>
+                        <div class="mini-components">
+                            <div class="mini-component model-layer">场景模型</div>
+                            <div class="mini-component model-layer">行为树</div>
+                            <div class="mini-component model-layer">对话流程</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">云原生</div>
+                        <div class="mini-components">
+                            <div class="mini-component cloud-layer">微服务</div>
+                            <div class="mini-component cloud-layer">服务发现</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">基础层</div>
+                        <div class="mini-components">
+                            <div class="mini-component infra-layer">场景存储</div>
+                            <div class="mini-component infra-layer">状态存储</div>
+                            <div class="mini-component infra-layer">消息队列</div>
+                            <div class="mini-component infra-layer">定时调度</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-highlights">
+                    <h4>💡 核心技术亮点</h4>
+                    <ul class="tech-list">
+                        <li><strong>DAG编排引擎</strong>：支持并行串行场景流程</li>
+                        <li><strong>XState状态机</strong>：复杂状态转换管理</li>
+                        <li><strong>自定义DSL</strong>：简化场景配置维护</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 24.2.3 真人驱动及客服 -->
+            <div class="architecture-card" data-section="2">
+                <div class="card-title">24.2.3 真人驱动及客服常用功能建设架构</div>
+                <div class="architecture-mini">
+                    <div class="mini-layer">
+                        <div class="mini-label">应用层</div>
+                        <div class="mini-components">
+                            <div class="mini-component app-layer">客服工作台</div>
+                            <div class="mini-component app-layer">真人接管</div>
+                            <div class="mini-component app-layer">知识库</div>
+                            <div class="mini-component app-layer">质检系统</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">框架层</div>
+                        <div class="mini-components">
+                            <div class="mini-component framework-layer">协作引擎</div>
+                            <div class="mini-component framework-layer">会话管理</div>
+                            <div class="mini-component framework-layer">权限控制</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">技术层</div>
+                        <div class="mini-components">
+                            <div class="mini-component tech-layer">智能路由</div>
+                            <div class="mini-component tech-layer">情感分析</div>
+                            <div class="mini-component tech-layer">意图识别</div>
+                            <div class="mini-component tech-layer">知识检索</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">模型层</div>
+                        <div class="mini-components">
+                            <div class="mini-component model-layer">NLP模型</div>
+                            <div class="mini-component model-layer">情感计算</div>
+                            <div class="mini-component model-layer">知识图谱</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">云原生</div>
+                        <div class="mini-components">
+                            <div class="mini-component cloud-layer">实时通信</div>
+                            <div class="mini-component cloud-layer">负载均衡</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">基础层</div>
+                        <div class="mini-components">
+                            <div class="mini-component infra-layer">会话存储</div>
+                            <div class="mini-component infra-layer">知识库</div>
+                            <div class="mini-component infra-layer">实时DB</div>
+                            <div class="mini-component infra-layer">音视频</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-highlights">
+                    <h4>💡 核心技术亮点</h4>
+                    <ul class="tech-list">
+                        <li><strong>人机协作</strong>：智能判断人工介入时机</li>
+                        <li><strong>WebRTC通信</strong>：低延迟音视频交互</li>
+                        <li><strong>智能分配</strong>：基于画像的路由策略</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 24.2.4 互动方式与素材配置 -->
+            <div class="architecture-card" data-section="3">
+                <div class="card-title">24.2.4 互动方式与素材配置功能架构</div>
+                <div class="architecture-mini">
+                    <div class="mini-layer">
+                        <div class="mini-label">应用层</div>
+                        <div class="mini-components">
+                            <div class="mini-component app-layer">素材平台</div>
+                            <div class="mini-component app-layer">互动设计器</div>
+                            <div class="mini-component app-layer">效果预览</div>
+                            <div class="mini-component app-layer">发布管理</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">框架层</div>
+                        <div class="mini-components">
+                            <div class="mini-component framework-layer">多模态交互</div>
+                            <div class="mini-component framework-layer">素材编排</div>
+                            <div class="mini-component framework-layer">渲染引擎</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">技术层</div>
+                        <div class="mini-components">
+                            <div class="mini-component tech-layer">语音合成</div>
+                            <div class="mini-component tech-layer">动作生成</div>
+                            <div class="mini-component tech-layer">表情驱动</div>
+                            <div class="mini-component tech-layer">手势识别</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">模型层</div>
+                        <div class="mini-components">
+                            <div class="mini-component model-layer">TTS模型</div>
+                            <div class="mini-component model-layer">动捕模型</div>
+                            <div class="mini-component model-layer">表情模型</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">云原生</div>
+                        <div class="mini-components">
+                            <div class="mini-component cloud-layer">CDN加速</div>
+                            <div class="mini-component cloud-layer">媒体处理</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">基础层</div>
+                        <div class="mini-components">
+                            <div class="mini-component infra-layer">素材存储</div>
+                            <div class="mini-component infra-layer">GPU集群</div>
+                            <div class="mini-component infra-layer">流媒体</div>
+                            <div class="mini-component infra-layer">边缘计算</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-highlights">
+                    <h4>💡 核心技术亮点</h4>
+                    <ul class="tech-list">
+                        <li><strong>多模态融合</strong>：语音视觉手势一体化</li>
+                        <li><strong>实时渲染</strong>：Unity/UE高质量3D渲染</li>
+                        <li><strong>边缘计算</strong>：就近处理降低延迟</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 24.2.5 上线场景与硬件扩展 -->
+            <div class="architecture-card" data-section="4">
+                <div class="card-title">24.2.5 上线场景与硬件扩展功能架构</div>
+                <div class="architecture-mini">
+                    <div class="mini-layer">
+                        <div class="mini-label">应用层</div>
+                        <div class="mini-components">
+                            <div class="mini-component app-layer">部署管理台</div>
+                            <div class="mini-component app-layer">硬件监控</div>
+                            <div class="mini-component app-layer">扩容策略</div>
+                            <div class="mini-component app-layer">运维控制台</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">框架层</div>
+                        <div class="mini-components">
+                            <div class="mini-component framework-layer">自动部署</div>
+                            <div class="mini-component framework-layer">弹性伸缩</div>
+                            <div class="mini-component framework-layer">故障恢复</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">技术层</div>
+                        <div class="mini-components">
+                            <div class="mini-component tech-layer">CI/CD</div>
+                            <div class="mini-component tech-layer">容器编排</div>
+                            <div class="mini-component tech-layer">资源调度</div>
+                            <div class="mini-component tech-layer">健康检查</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">模型层</div>
+                        <div class="mini-components">
+                            <div class="mini-component model-layer">负载预测</div>
+                            <div class="mini-component model-layer">资源优化</div>
+                            <div class="mini-component model-layer">故障诊断</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">云原生</div>
+                        <div class="mini-components">
+                            <div class="mini-component cloud-layer">Kubernetes</div>
+                            <div class="mini-component cloud-layer">Helm Charts</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">基础层</div>
+                        <div class="mini-components">
+                            <div class="mini-component infra-layer">GPU/TPU</div>
+                            <div class="mini-component infra-layer">存储集群</div>
+                            <div class="mini-component infra-layer">网络设备</div>
+                            <div class="mini-component infra-layer">监控系统</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-highlights">
+                    <h4>💡 核心技术亮点</h4>
+                    <ul class="tech-list">
+                        <li><strong>弹性伸缩</strong>：HPA/VPA自动扩缩容</li>
+                        <li><strong>GitOps流程</strong>：自动化构建部署</li>
+                        <li><strong>异构计算</strong>：CPU/GPU/TPU混合调度</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 24.2.6 服务与营销预测 -->
+            <div class="architecture-card" data-section="5">
+                <div class="card-title">24.2.6 服务与营销预测功能架构</div>
+                <div class="architecture-mini">
+                    <div class="mini-layer">
+                        <div class="mini-label">应用层</div>
+                        <div class="mini-components">
+                            <div class="mini-component app-layer">预测平台</div>
+                            <div class="mini-component app-layer">策略制定</div>
+                            <div class="mini-component app-layer">效果评估</div>
+                            <div class="mini-component app-layer">决策支持</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">框架层</div>
+                        <div class="mini-components">
+                            <div class="mini-component framework-layer">预测引擎</div>
+                            <div class="mini-component framework-layer">推荐系统</div>
+                            <div class="mini-component framework-layer">A/B测试</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">技术层</div>
+                        <div class="mini-components">
+                            <div class="mini-component tech-layer">特征工程</div>
+                            <div class="mini-component tech-layer">模型训练</div>
+                            <div class="mini-component tech-layer">在线推理</div>
+                            <div class="mini-component tech-layer">效果追踪</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">模型层</div>
+                        <div class="mini-components">
+                            <div class="mini-component model-layer">时序预测</div>
+                            <div class="mini-component model-layer">用户画像</div>
+                            <div class="mini-component model-layer">转化预测</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">云原生</div>
+                        <div class="mini-components">
+                            <div class="mini-component cloud-layer">MLOps</div>
+                            <div class="mini-component cloud-layer">模型服务</div>
+                        </div>
+                    </div>
+                    <div class="mini-layer">
+                        <div class="mini-label">基础层</div>
+                        <div class="mini-components">
+                            <div class="mini-component infra-layer">数据湖</div>
+                            <div class="mini-component infra-layer">特征存储</div>
+                            <div class="mini-component infra-layer">模型仓库</div>
+                            <div class="mini-component infra-layer">计算集群</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-highlights">
+                    <h4>💡 核心技术亮点</h4>
+                    <ul class="tech-list">
+                        <li><strong>多算法融合</strong>：回归分类时序预测</li>
+                        <li><strong>自动特征工程</strong>：提升预测准确性</li>
+                        <li><strong>毫秒级推理</strong>：高并发实时预测</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 继续添加其他架构卡片... -->
+            <!-- 这里可以继续添加剩余的架构图，采用相同的卡片布局 -->
+        </div>
+    </div>
+    
+    <script>
+        // 创建背景粒子
+        function createBackgroundParticles() {
+            const container = document.querySelector('.background-particles');
+            if (!container) {
+                const bgParticles = document.createElement('div');
+                bgParticles.className = 'background-particles';
+                document.body.appendChild(bgParticles);
+                
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'bg-particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 8 + 's';
+                    particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                    bgParticles.appendChild(particle);
+                }
+            }
+        }
+        
+        // 主题切换
+        let isDarkMode = false;
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            const btn = document.querySelector('.floating-toolbar .toolbar-btn');
+            btn.innerHTML = isDarkMode ? '☀️' : '🌙';
+        }
+        
+        // 全屏模式
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // 导出PDF（模拟）
+        function exportPDF() {
+            window.print();
+        }
+        
+        // 总览模式
+        function showOverview() {
+            const cards = document.querySelectorAll('.architecture-card');
+            cards.forEach(card => {
+                card.style.transform = 'scale(0.8)';
+                card.style.margin = '10px';
+            });
+            
+            setTimeout(() => {
+                cards.forEach(card => {
+                    card.style.transform = '';
+                    card.style.margin = '';
+                });
+            }, 3000);
+        }
+        
+        // 滚动到指定部分
+        function scrollToSection(index) {
+            const cards = document.querySelectorAll('.architecture-card');
+            if (cards[index]) {
+                cards[index].scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // 更新导航状态
+                document.querySelectorAll('.nav-item').forEach((item, i) => {
+                    item.classList.toggle('active', i === index);
+                });
+            }
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            createBackgroundParticles();
+            
+            // 移除加载动画
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 1000);
+            
+            // 增强交互效果
+            document.querySelectorAll('.mini-component').forEach((component, index) => {
+                component.style.animationDelay = `${index * 0.05}s`;
+                
+                component.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.05)';
+                    this.style.zIndex = '10';
+                    
+                    // 同层组件联动效果
+                    const siblings = this.parentElement.querySelectorAll('.mini-component');
+                    siblings.forEach(sibling => {
+                        if (sibling !== this) {
+                            sibling.style.opacity = '0.7';
+                        }
+                    });
+                });
+                
+                component.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.zIndex = '';
+                    
+                    const siblings = this.parentElement.querySelectorAll('.mini-component');
+                    siblings.forEach(sibling => {
+                        sibling.style.opacity = '';
+                    });
+                });
+            });
+            
+            // 滚动监听
+            const observerOptions = {
+                threshold: 0.3,
+                rootMargin: '0px 0px -20% 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const index = parseInt(entry.target.dataset.section);
+                        document.querySelectorAll('.nav-item').forEach((item, i) => {
+                            item.classList.toggle('active', i === index);
+                        });
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.architecture-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+        
+        // 暗色主题样式
+        const darkModeStyles = `
+            .dark-mode {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            }
+            .dark-mode .architecture-card {
+                background: rgba(52, 73, 94, 0.9);
+                color: #ecf0f1;
+            }
+            .dark-mode .main-title {
+                background: rgba(52, 73, 94, 0.9);
+                color: #ecf0f1;
+            }
+            .dark-mode .card-title {
+                background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+                color: #ecf0f1;
+            }
+            .dark-mode .architecture-mini {
+                background: linear-gradient(145deg, #34495e 0%, #2c3e50 100%);
+            }
+            .dark-mode .tech-highlights {
+                background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+                color: #ecf0f1;
+            }
+            .dark-mode .tech-list li {
+                background: rgba(236, 240, 241, 0.1);
+                color: #bdc3c7;
+            }
+            .dark-mode .bg-particle {
+                background: rgba(236, 240, 241, 0.3);
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = darkModeStyles;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
