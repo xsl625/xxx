@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI数字人架构图 - SVG矢量图生成器</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: end;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        select, input, button {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+        
+        .svg-preview {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .svg-container {
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .download-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .arch-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .arch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .arch-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        
+        .arch-card h3 {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .arch-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .batch-controls {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">SVG矢量图生成器</h1>
+            <p class="subtitle">生成高质量可缩放的架构图矢量图</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>画布尺寸</label>
+                <select id="canvasSize">
+                    <option value="1200x800">1200×800 (标准)</option>
+                    <option value="1600x1000">1600×1000 (大尺寸)</option>
+                    <option value="2000x1200">2000×1200 (超大)</option>
+                    <option value="800x600">800×600 (紧凑)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>组件样式</label>
+                <select id="componentStyle">
+                    <option value="rounded">圆角现代</option>
+                    <option value="sharp">直角经典</option>
+                    <option value="pill">胶囊形状</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>颜色主题</label>
+                <select id="colorTheme">
+                    <option value="gradient">渐变彩色</option>
+                    <option value="monochrome">单色简洁</option>
+                    <option value="tech">科技蓝</option>
+                    <option value="warm">暖色调</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>字体大小</label>
+                <input type="range" id="fontSize" min="10" max="20" value="14">
+                <span id="fontSizeValue">14px</span>
+            </div>
+            
+            <button class="btn" onclick="generateCurrentSVG()">
+                🎨 生成当前架构图
+            </button>
+        </div>
+        
+        <div class="svg-preview">
+            <h3>SVG预览</h3>
+            <div class="svg-container" id="svgContainer">
+                <p style="color: #999;">选择架构图后，SVG预览将显示在这里</p>
+            </div>
+            
+            <div class="download-section">
+                <button class="btn btn-success" onclick="downloadSVG()" id="downloadBtn" disabled>
+                    📥 下载SVG文件
+                </button>
+                <button class="btn btn-info" onclick="downloadPNG()">
+                    🖼️ 转换为PNG
+                </button>
+            </div>
+        </div>
+        
+        <div class="batch-controls">
+            <h3 style="margin-bottom: 15px; color: #2c3e50;">批量生成</h3>
+            <p style="color: #666; margin-bottom: 20px;">一键生成所有11个架构图的SVG文件</p>
+            <button class="btn btn-success" onclick="batchGenerateAll()">
+                🚀 批量生成所有SVG
+            </button>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">准备生成...</div>
+            </div>
+        </div>
+        
+        <div class="architecture-grid" id="architectureGrid">
+            <!-- 架构卡片将通过JavaScript生成 -->
+        </div>
+    </div>
+    
+    <script>
+        // 架构数据
+        const architectures = [
+            {
+                id: "template_config",
+                title: "24.2.1 模版及基础信息配置",
+                description: "模版引擎、配置管理、版本控制等核心功能",
+                layers: [
+                    { name: "应用层", components: ["模版管理界面", "配置管理控制台", "预览与测试", "版本管理"] },
+                    { name: "应用框架层", components: ["模版引擎", "配置解析器", "验证框架"] },
+                    { name: "应用技术层", components: ["JSON Schema验证", "模版渲染引擎", "配置热更新", "缓存管理"] },
+                    { name: "模型层", components: ["配置模型", "模版库", "元数据管理"] },
+                    { name: "云原生层", components: ["容器化部署", "配置中心"] },
+                    { name: "基础设施层", components: ["数据库存储", "文件存储", "缓存系统", "监控告警"] }
+                ]
+            },
+            {
+                id: "scene_management",
+                title: "24.2.2 场景管理功能",
+                description: "场景编排、状态机、事件驱动等管理能力",
+                layers: [
+                    { name: "应用层", components: ["场景编辑器", "场景库管理", "场景调度台", "性能监控"] },
+                    { name: "应用框架层", components: ["场景编排引擎", "状态机管理", "事件驱动框架"] },
+                    { name: "应用技术层", components: ["场景DSL解析", "动作执行器", "条件判断引擎", "场景切换"] },
+                    { name: "模型层", components: ["场景模型", "行为树", "对话流程"] },
+                    { name: "云原生层", components: ["微服务架构", "服务发现"] },
+                    { name: "基础设施层", components: ["场景存储", "状态存储", "消息队列", "定时调度"] }
+                ]
+            },
+            {
+                id: "human_service",
+                title: "24.2.3 真人驱动及客服",
+                description: "人机协作、智能路由、质检系统等服务能力",
+                layers: [
+                    { name: "应用层", components: ["客服工作台", "真人接管界面", "知识库管理", "质检系统"] },
+                    { name: "应用框架层", components: ["人机协作引擎", "会话管理", "权限控制"] },
+                    { name: "应用技术层", components: ["智能路由", "情感分析", "意图识别", "知识检索"] },
+                    { name: "模型层", components: ["NLP模型", "情感计算模型", "知识图谱"] },
+                    { name: "云原生层", components: ["实时通信", "负载均衡"] },
+                    { name: "基础设施层", components: ["会话存储", "知识库", "实时数据库", "音视频服务"] }
+                ]
+            },
+            {
+                id: "interaction_material",
+                title: "24.2.4 互动方式与素材配置",
+                description: "多模态交互、素材编排、实时渲染等功能",
+                layers: [
+                    { name: "应用层", components: ["素材管理平台", "互动设计器", "效果预览", "发布管理"] },
+                    { name: "应用框架层", components: ["多模态交互", "素材编排", "渲染引擎"] },
+                    { name: "应用技术层", components: ["语音合成", "动作生成", "表情驱动", "手势识别"] },
+                    { name: "模型层", components: ["TTS模型", "动作捕捉模型", "面部表情模型"] },
+                    { name: "云原生层", components: ["CDN加速", "媒体处理"] },
+                    { name: "基础设施层", components: ["素材存储", "GPU集群", "流媒体服务", "边缘计算"] }
+                ]
+            },
+            {
+                id: "deployment_hardware",
+                title: "24.2.5 上线场景与硬件扩展",
+                description: "自动部署、弹性伸缩、故障恢复等运维能力",
+                layers: [
+                    { name: "应用层", components: ["部署管理台", "硬件监控", "扩容策略", "运维控制台"] },
+                    { name: "应用框架层", components: ["自动化部署", "弹性伸缩", "故障恢复"] },
+                    { name: "应用技术层", components: ["CI/CD流水线", "容器编排", "资源调度", "健康检查"] },
+                    { name: "模型层", components: ["负载预测模型", "资源优化模型", "故障诊断模型"] },
+                    { name: "云原生层", components: ["Kubernetes", "Helm Charts"] },
+                    { name: "基础设施层", components: ["GPU/TPU集群", "存储集群", "网络设备", "监控系统"] }
+                ]
+            },
+            {
+                id: "marketing_prediction",
+                title: "24.2.6 服务与营销预测",
+                description: "预测引擎、推荐系统、A/B测试等智能分析",
+                layers: [
+                    { name: "应用层", components: ["预测分析平台", "营销策略制定", "效果评估", "决策支持"] },
+                    { name: "应用框架层", components: ["预测引擎", "推荐系统", "A/B测试框架"] },
+                    { name: "应用技术层", components: ["特征工程", "模型训练", "在线推理", "效果追踪"] },
+                    { name: "模型层", components: ["时间序列预测", "用户画像模型", "转化率预测"] },
+                    { name: "云原生层", components: ["MLOps平台", "模型服务"] },
+                    { name: "基础设施层", components: ["数据湖", "特征存储", "模型仓库", "计算集群"] }
+                ]
+            },
+            {
+                id: "strategy_optimization",
+                title: "24.2.7 定期策略优化",
+                description: "策略引擎、强化学习、多目标优化等智能决策",
+                layers: [
+                    { name: "应用层", components: ["策略配置台", "优化建议", "效果对比", "自动化调优"] },
+                    { name: "应用框架层", components: ["策略引擎", "优化算法", "评估框架"] },
+                    { name: "应用技术层", components: ["强化学习", "遗传算法", "贝叶斯优化", "多目标优化"] },
+                    { name: "模型层", components: ["策略优化模型", "效果评估模型", "参数调优模型"] },
+                    { name: "云原生层", components: ["定时任务", "分布式计算"] },
+                    { name: "基础设施层", components: ["历史数据", "实验平台", "指标存储", "计算资源"] }
+                ]
+            },
+            {
+                id: "stability_improvement",
+                title: "24.2.8 稳定性提升",
+                description: "熔断机制、异常检测、混沌工程等可靠性保障",
+                layers: [
+                    { name: "应用层", components: ["稳定性监控", "故障预警", "应急响应", "SLA管理"] },
+                    { name: "应用框架层", components: ["熔断机制", "限流控制", "降级策略"] },
+                    { name: "应用技术层", components: ["异常检测", "自动恢复", "压力测试", "混沌工程"] },
+                    { name: "模型层", components: ["异常检测模型", "故障预测模型", "性能评估模型"] },
+                    { name: "云原生层", components: ["服务网格", "可观测性"] },
+                    { name: "基础设施层", components: ["多可用区", "备份系统", "监控告警", "日志聚合"] }
+                ]
+            },
+            {
+                id: "log_permission",
+                title: "24.2.9 日志与权限建设",
+                description: "RBAC权限、日志聚合、审计合规等安全管理",
+                layers: [
+                    { name: "应用层", components: ["权限管理台", "日志查询", "审计报告", "合规检查"] },
+                    { name: "应用框架层", components: ["RBAC权限", "日志收集", "审计框架"] },
+                    { name: "应用技术层", components: ["身份认证", "授权控制", "日志解析", "数据脱敏"] },
+                    { name: "模型层", components: ["行为分析模型", "风险评估模型", "异常行为检测"] },
+                    { name: "云原生层", components: ["统一认证", "日志聚合"] },
+                    { name: "基础设施层", components: ["LDAP/AD", "日志存储", "搜索引擎", "备份归档"] }
+                ]
+            },
+            {
+                id: "scene_upgrade",
+                title: "24.2.10 场景升级",
+                description: "升级引擎、灰度发布、数据迁移等升级管理",
+                layers: [
+                    { name: "应用层", components: ["升级管理台", "版本控制", "回滚机制", "兼容性检查"] },
+                    { name: "应用框架层", components: ["升级引擎", "迁移工具", "灰度发布"] },
+                    { name: "应用技术层", components: ["数据迁移", "配置迁移", "服务切换", "依赖管理"] },
+                    { name: "模型层", components: ["版本兼容模型", "影响评估模型", "升级决策模型"] },
+                    { name: "云原生层", components: ["蓝绿部署", "金丝雀发布"] },
+                    { name: "基础设施层", components: ["版本仓库", "备份存储", "镜像仓库", "配置中心"] }
+                ]
+            },
+            {
+                id: "system_capability",
+                title: "24.2.11 系统建设能力",
+                description: "微服务框架、DevOps平台、能力开放等基础能力",
+                layers: [
+                    { name: "应用层", components: ["开发者门户", "能力开放平台", "API网关", "SDK/工具包"] },
+                    { name: "应用框架层", components: ["微服务框架", "组件化架构", "插件系统"] },
+                    { name: "应用技术层", components: ["服务治理", "配置管理", "链路追踪", "性能调优"] },
+                    { name: "模型层", components: ["模型工厂", "算法库", "能力模型"] },
+                    { name: "云原生层", components: ["DevOps平台", "容器平台"] },
+                    { name: "基础设施层", components: ["开发环境", "测试环境", "生产环境", "工具链"] }
+                ]
+            }
+        ];
+        
+        let selectedArchitecture = null;
+        let currentSVG = null;
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeControls();
+            renderArchitectureGrid();
+        });
+        
+        // 初始化控件
+        function initializeControls() {
+            const fontSizeSlider = document.getElementById('fontSize');
+            const fontSizeValue = document.getElementById('fontSizeValue');
+            
+            fontSizeSlider.addEventListener('input', function() {
+                fontSizeValue.textContent = this.value + 'px';
+            });
+        }
+        
+        // 渲染架构网格
+        function renderArchitectureGrid() {
+            const grid = document.getElementById('architectureGrid');
+            grid.innerHTML = '';
+            
+            architectures.forEach((arch, index) => {
+                const card = document.createElement('div');
+                card.className = 'arch-card';
+                card.innerHTML = `
+                    <h3>${arch.title}</h3>
+                    <p>${arch.description}</p>
+                `;
+                
+                card.addEventListener('click', () => selectArchitecture(index));
+                grid.appendChild(card);
+            });
+        }
+        
+        // 选择架构
+        function selectArchitecture(index) {
+            // 更新选中状态
+            document.querySelectorAll('.arch-card').forEach((card, i) => {
+                card.classList.toggle('selected', i === index);
+            });
+            
+            selectedArchitecture = architectures[index];
+            generateCurrentSVG();
+        }
+        
+        // 生成当前架构的SVG
+        function generateCurrentSVG() {
+            if (!selectedArchitecture) {
+                alert('请先选择一个架构图！');
+                return;
+            }
+            
+            const canvasSize = document.getElementById('canvasSize').value;
+            const componentStyle = document.getElementById('componentStyle').value;
+            const colorTheme = document.getElementById('colorTheme').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            
+            const [width, height] = canvasSize.split('x').map(Number);
+            
+            const svg = createSVG(selectedArchitecture, width, height, componentStyle, colorTheme, fontSize);
+            
+            const svgContainer = document.getElementById('svgContainer');
+            svgContainer.innerHTML = svg;
+            
+            currentSVG = svg;
+            document.getElementById('downloadBtn').disabled = false;
+        }
+        
+        // 创建SVG
+        function createSVG(architecture, width, height, style, theme, fontSize) {
+            const colors = getColorScheme(theme);
+            const cornerRadius = style === 'rounded' ? 12 : style === 'pill' ? 25 : 2;
+            
+            let svgContent = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+                    <defs>
+                        ${colors.gradients}
+                    </defs>
+                    
+                    <!-- 背景 -->
+                    <rect width="100%" height="100%" fill="${colors.background}"/>
+                    
+                    <!-- 装饰性背景图案 -->
+                    <defs>
+                        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse" opacity="0.05">
+                            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="${colors.grid}" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)"/>
+                    
+                    <!-- 标题 -->
+                    <text x="${width/2}" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="${fontSize + 10}" font-weight="bold" fill="${colors.title}">
+                        ${architecture.title}
+                    </text>
+                    
+                    <!-- 顶部装饰线 -->
+                    <rect x="100" y="80" width="${width-200}" height="4" fill="url(#topGradient)" rx="2"/>
+            `;
+            
+            // 计算层级布局
+            const layerHeight = 80;
+            const startY = 120;
+            const layerLabelWidth = 160;
+            const componentHeight = 45;
+            const componentSpacing = 15;
+            
+            architecture.layers.forEach((layer, layerIndex) => {
+                const yPos = startY + (layerIndex * layerHeight);
+                
+                // 层级标签
+                svgContent += `
+                    <rect x="50" y="${yPos}" width="${layerLabelWidth}" height="${componentHeight}" rx="${cornerRadius}" 
+                          fill="${colors.layers[layerIndex]}" opacity="0.9" 
+                          stroke="${colors.layerBorders[layerIndex]}" stroke-width="2"/>
+                    <text x="${50 + layerLabelWidth/2}" y="${yPos + componentHeight/2 + 5}" text-anchor="middle" 
+                          font-family="Inter, sans-serif" font-size="${fontSize}" font-weight="600" fill="white">
+                        ${layer.name}
+                    </text>
+                `;
+                
+                // 组件
+                let xPos = layerLabelWidth + 80;
+                const availableWidth = width - xPos - 50;
+                const componentWidth = Math.min(180, (availableWidth - (layer.components.length - 1) * componentSpacing) / layer.components.length);
+                
+                layer.components.forEach((component, compIndex) => {
+                    svgContent += `
+                        <rect x="${xPos}" y="${yPos}" width="${componentWidth}" height="${componentHeight}" rx="${cornerRadius}" 
+                              fill="${colors.components[layerIndex]}" opacity="0.8"
+                              stroke="${colors.componentBorders[layerIndex]}" stroke-width="1.5"/>
+                        <text x="${xPos + componentWidth/2}" y="${yPos + componentHeight/2 + 5}" text-anchor="middle" 
+                              font-family="Inter, sans-serif" font-size="${fontSize - 1}" font-weight="500" 
+                              fill="${colors.componentText}">
+                            ${wrapText(component, componentWidth - 20, fontSize - 1)}
+                        </text>
+                    `;
+                    xPos += componentWidth + componentSpacing;
+                });
+                
+                // 连接线
+                if (layerIndex < architecture.layers.length - 1) {
+                    const lineY = yPos + componentHeight + 15;
+                    svgContent += `
+                        <line x1="${50 + layerLabelWidth/2}" y1="${lineY}" x2="${50 + layerLabelWidth/2}" y2="${lineY + 10}" 
+                              stroke="${colors.connector}" stroke-width="2" opacity="0.6"/>
+                        <polygon points="${50 + layerLabelWidth/2 - 4},${lineY + 6} ${50 + layerLabelWidth/2 + 4},${lineY + 6} ${50 + layerLabelWidth/2},${lineY + 12}" 
+                                 fill="${colors.connector}" opacity="0.6"/>
+                    `;
+                }
+            });
+            
+            // 底部信息
+            svgContent += `
+                <text x="${width/2}" y="${height - 30}" text-anchor="middle" font-family="Inter, sans-serif" 
+                      font-size="${fontSize - 2}" fill="${colors.subtitle}" opacity="0.7">
+                    AI数字人技术架构 - 生成时间: ${new Date().toLocaleString()}
+                </text>
+            `;
+            
+            svgContent += '</svg>';
+            return svgContent;
+        }
+        
+        // 获取颜色方案
+        function getColorScheme(theme) {
+            const schemes = {
+                gradient: {
+                    background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+                    title: '#2c3e50',
+                    subtitle: '#6c757d',
+                    grid: '#dee2e6',
+                    connector: '#6c757d',
+                    componentText: '#2c3e50',
+                    layers: ['#ff6b6b', '#ff922b', '#ffc107', '#28a745', '#007bff', '#6f42c1'],
+                    layerBorders: ['#ee5a52', '#fc7303', '#ffb300', '#20c997', '#0056b3', '#5a2d91'],
+                    components: ['#ff9a9e', '#fcb69f', '#f9ca24', '#5cb85c', '#3498db', '#7b1fa2'],
+                    componentBorders: ['#ff6b6b', '#ff922b', '#ffc107', '#28a745', '#007bff', '#6f42c1'],
+                    gradients: `
+                        <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#ff6b6b"/>
+                            <stop offset="20%" style="stop-color:#ff922b"/>
+                            <stop offset="40%" style="stop-color:#ffc107"/>
+                            <stop offset="60%" style="stop-color:#28a745"/>
+                            <stop offset="80%" style="stop-color:#007bff"/>
+                            <stop offset="100%" style="stop-color:#6f42c1"/>
+                        </linearGradient>
+                    `
+                },
+                monochrome: {
+                    background: '#ffffff',
+                    title: '#212529',
+                    subtitle: '#6c757d',
+                    grid: '#e9ecef',
+                    connector: '#495057',
+                    componentText: '#212529',
+                    layers: Array(6).fill('#495057'),
+                    layerBorders: Array(6).fill('#343a40'),
+                    components: Array(6).fill('#f8f9fa'),
+                    componentBorders: Array(6).fill('#dee2e6'),
+                    gradients: `
+                        <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#495057"/>
+                            <stop offset="100%" style="stop-color:#212529"/>
+                        </linearGradient>
+                    `
+                },
+                tech: {
+                    background: 'linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%)',
+                    title: '#64ffda',
+                    subtitle: '#90a4ae',
+                    grid: '#263238',
+                    connector: '#64ffda',
+                    componentText: '#ffffff',
+                    layers: ['#1e88e5', '#1976d2', '#1565c0', '#0d47a1', '#0277bd', '#01579b'],
+                    layerBorders: ['#42a5f5', '#2196f3', '#1e88e5', '#1976d2', '#1565c0', '#0d47a1'],
+                    components: ['#263238', '#37474f', '#455a64', '#546e7a', '#607d8b', '#78909c'],
+                    componentBorders: ['#64ffda', '#4fc3f7', '#29b6f6', '#03a9f4', '#039be5', '#0288d1'],
+                    gradients: `
+                        <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#64ffda"/>
+                            <stop offset="50%" style="stop-color:#4fc3f7"/>
+                            <stop offset="100%" style="stop-color:#29b6f6"/>
+                        </linearGradient>
+                    `
+                },
+                warm: {
+                    background: 'linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%)',
+                    title: '#e65100',
+                    subtitle: '#bf360c',
+                    grid: '#ffcc02',
+                    connector: '#ff9800',
+                    componentText: '#3e2723',
+                    layers: ['#ff5722', '#ff9800', '#ffc107', '#ffeb3b', '#cddc39', '#8bc34a'],
+                    layerBorders: ['#d84315', '#f57c00', '#ff8f00', '#ff6f00', '#9e9d24', '#689f38'],
+                    components: ['#ffccbc', '#ffe0b2', '#fff2c5', '#fff9c4', '#f0f4c3', '#dcedc8'],
+                    componentBorders: ['#ff8a65', '#ffb74d', '#ffd54f', '#ffee58', '#dce775', '#aed581'],
+                    gradients: `
+                        <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#ff5722"/>
+                            <stop offset="25%" style="stop-color:#ff9800"/>
+                            <stop offset="50%" style="stop-color:#ffc107"/>
+                            <stop offset="75%" style="stop-color:#ffeb3b"/>
+                            <stop offset="100%" style="stop-color:#cddc39"/>
+                        </linearGradient>
+                    `
+                }
+            };
+            
+            return schemes[theme] || schemes.gradient;
+        }
+        
+        // 文本换行处理
+        function wrapText(text, maxWidth, fontSize) {
+            // 简化版文本换行，实际SVG中需要使用tspan
+            if (text.length > 12) {
+                return text.substring(0, 10) + '...';
+            }
+            return text;
+        }
+        
+        // 下载SVG
+        function downloadSVG() {
+            if (!currentSVG) return;
+            
+            const blob = new Blob([currentSVG], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = `${selectedArchitecture.title}.svg`;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        
+        // 转换为PNG
+        function downloadPNG() {
+            if (!currentSVG) return;
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            const canvasSize = document.getElementById('canvasSize').value;
+            const [width, height] = canvasSize.split('x').map(Number);
+            
+            canvas.width = width * 2; // 高DPI
+            canvas.height = height * 2;
+            ctx.scale(2, 2);
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = `${selectedArchitecture.title}.png`;
+                    link.href = url;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                });
+            };
+            
+            const svgBlob = new Blob([currentSVG], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(svgBlob);
+            img.src = url;
+        }
+        
+        // 批量生成所有架构图
+        async function batchGenerateAll() {
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+            
+            const canvasSize = document.getElementById('canvasSize').value;
+            const componentStyle = document.getElementById('componentStyle').value;
+            const colorTheme = document.getElementById('colorTheme').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            
+            const [width, height] = canvasSize.split('x').map(Number);
+            
+            for (let i = 0; i < architectures.length; i++) {
+                const arch = architectures[i];
+                const progress = ((i + 1) / architectures.length) * 100;
+                
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `正在生成: ${arch.title} (${i + 1}/${architectures.length})`;
+                
+                const svg = createSVG(arch, width, height, componentStyle, colorTheme, fontSize);
+                
+                // 下载SVG
+                const blob = new Blob([svg], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `${arch.title}.svg`;
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                // 短暂延迟，避免浏览器阻塞
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            progressText.textContent = '✅ 批量生成完成！';
+            setTimeout(() => {
+                progressContainer.style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
