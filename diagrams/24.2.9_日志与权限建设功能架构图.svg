@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style>
+            .title-text { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #2E4A62; }
+            .layer-title { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #FFFFFF; }
+            .component-text { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 14px; fill: #FFFFFF; }
+            .layer-rect { stroke: #FFFFFF; stroke-width: 2; rx: 8; ry: 8; }
+            .component-rect { stroke: #FFFFFF; stroke-width: 1; rx: 4; ry: 4; }
+        </style>
+        <filter id="shadow">
+            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+        </filter>
+    </defs>
+    
+    <!-- 背景 -->
+    <rect width="1200" height="800" fill="#F8F9FA" />
+    
+    <!-- 标题 -->
+    <text x="600" y="40" text-anchor="middle" class="title-text">24.2.9 日志与权限建设功能架构图</text>
+    
+    <!-- 权限管理层 (Permission Management Layer) -->
+    <rect x="50" y="80" width="1100" height="103" 
+          fill="#4A90E2" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="110" class="layer-title">权限管理层 (Permission Management Layer)</text>
+    
+    <rect x="80" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="146" text-anchor="middle" class="component-text">用户管理</text>
+    <rect x="288" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="146" text-anchor="middle" class="component-text">角色管理</text>
+    <rect x="496" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="146" text-anchor="middle" class="component-text">权限分配</text>
+    <rect x="704" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="146" text-anchor="middle" class="component-text">访问控制</text>
+    <rect x="912" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="146" text-anchor="middle" class="component-text">授权验证</text>
+    <!-- 箭头 -->
+    <polygon points="590,188 610,188 600,203" 
+             fill="#2E4A62" />
+    
+    <!-- 日志采集层 (Log Collection Layer) -->
+    <rect x="50" y="193" width="1100" height="103" 
+          fill="#7ED321" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="223" class="layer-title">日志采集层 (Log Collection Layer)</text>
+    
+    <rect x="80" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="259" text-anchor="middle" class="component-text">应用日志</text>
+    <rect x="288" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="259" text-anchor="middle" class="component-text">系统日志</text>
+    <rect x="496" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="259" text-anchor="middle" class="component-text">访问日志</text>
+    <rect x="704" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="259" text-anchor="middle" class="component-text">审计日志</text>
+    <rect x="912" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="259" text-anchor="middle" class="component-text">错误日志</text>
+    <!-- 箭头 -->
+    <polygon points="590,301 610,301 600,316" 
+             fill="#2E4A62" />
+    
+    <!-- 安全审计层 (Security Audit Layer) -->
+    <rect x="50" y="306" width="1100" height="103" 
+          fill="#F5A623" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="336" class="layer-title">安全审计层 (Security Audit Layer)</text>
+    
+    <rect x="80" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="372" text-anchor="middle" class="component-text">操作审计</text>
+    <rect x="288" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="372" text-anchor="middle" class="component-text">权限审计</text>
+    <rect x="496" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="372" text-anchor="middle" class="component-text">数据审计</text>
+    <rect x="704" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="372" text-anchor="middle" class="component-text">合规检查</text>
+    <rect x="912" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="372" text-anchor="middle" class="component-text">风险评估</text>
+    <!-- 箭头 -->
+    <polygon points="590,414 610,414 600,429" 
+             fill="#2E4A62" />
+    
+    <!-- 日志处理层 (Log Processing Layer) -->
+    <rect x="50" y="419" width="1100" height="103" 
+          fill="#BD10E0" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="449" class="layer-title">日志处理层 (Log Processing Layer)</text>
+    
+    <rect x="80" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="485" text-anchor="middle" class="component-text">日志解析</text>
+    <rect x="288" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="485" text-anchor="middle" class="component-text">日志过滤</text>
+    <rect x="496" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="485" text-anchor="middle" class="component-text">日志聚合</text>
+    <rect x="704" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="485" text-anchor="middle" class="component-text">日志分析</text>
+    <rect x="912" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="485" text-anchor="middle" class="component-text">日志告警</text>
+    <!-- 箭头 -->
+    <polygon points="590,527 610,527 600,542" 
+             fill="#2E4A62" />
+    
+    <!-- 存储管理层 (Storage Management Layer) -->
+    <rect x="50" y="532" width="1100" height="103" 
+          fill="#B8E986" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="562" class="layer-title">存储管理层 (Storage Management Layer)</text>
+    
+    <rect x="80" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="598" text-anchor="middle" class="component-text">日志存储</text>
+    <rect x="288" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="598" text-anchor="middle" class="component-text">权限数据</text>
+    <rect x="496" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="598" text-anchor="middle" class="component-text">审计记录</text>
+    <rect x="704" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="598" text-anchor="middle" class="component-text">索引管理</text>
+    <rect x="912" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="598" text-anchor="middle" class="component-text">数据归档</text>
+    <!-- 箭头 -->
+    <polygon points="590,640 610,640 600,655" 
+             fill="#2E4A62" />
+    
+    <!-- 基础服务层 (Foundation Service Layer) -->
+    <rect x="50" y="645" width="1100" height="103" 
+          fill="#50E3C2" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="675" class="layer-title">基础服务层 (Foundation Service Layer)</text>
+    
+    <rect x="80" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="711" text-anchor="middle" class="component-text">身份认证</text>
+    <rect x="288" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="711" text-anchor="middle" class="component-text">单点登录</text>
+    <rect x="496" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="711" text-anchor="middle" class="component-text">加密服务</text>
+    <rect x="704" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="711" text-anchor="middle" class="component-text">证书管理</text>
+    <rect x="912" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="711" text-anchor="middle" class="component-text">安全网关</text>
+</svg>
