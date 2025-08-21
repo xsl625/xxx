@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style>
+            .title-text { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #2E4A62; }
+            .layer-title { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #FFFFFF; }
+            .component-text { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 14px; fill: #FFFFFF; }
+            .layer-rect { stroke: #FFFFFF; stroke-width: 2; rx: 8; ry: 8; }
+            .component-rect { stroke: #FFFFFF; stroke-width: 1; rx: 4; ry: 4; }
+        </style>
+        <filter id="shadow">
+            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+        </filter>
+    </defs>
+    
+    <!-- 背景 -->
+    <rect width="1200" height="800" fill="#F8F9FA" />
+    
+    <!-- 标题 -->
+    <text x="600" y="40" text-anchor="middle" class="title-text">24.2.2 场景管理功能架构图</text>
+    
+    <!-- 场景设计层 (Scenario Design Layer) -->
+    <rect x="50" y="80" width="1100" height="103" 
+          fill="#4A90E2" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="110" class="layer-title">场景设计层 (Scenario Design Layer)</text>
+    
+    <rect x="80" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="146" text-anchor="middle" class="component-text">场景编辑器</text>
+    <rect x="288" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="146" text-anchor="middle" class="component-text">流程设计器</text>
+    <rect x="496" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="146" text-anchor="middle" class="component-text">规则配置</text>
+    <rect x="704" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="146" text-anchor="middle" class="component-text">场景模板</text>
+    <rect x="912" y="130" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="146" text-anchor="middle" class="component-text">场景预览</text>
+    <!-- 箭头 -->
+    <polygon points="590,188 610,188 600,203" 
+             fill="#2E4A62" />
+    
+    <!-- 场景引擎层 (Scenario Engine Layer) -->
+    <rect x="50" y="193" width="1100" height="103" 
+          fill="#7ED321" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="223" class="layer-title">场景引擎层 (Scenario Engine Layer)</text>
+    
+    <rect x="80" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="259" text-anchor="middle" class="component-text">场景解析引擎</text>
+    <rect x="288" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="259" text-anchor="middle" class="component-text">流程执行引擎</text>
+    <rect x="496" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="259" text-anchor="middle" class="component-text">规则引擎</text>
+    <rect x="704" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="259" text-anchor="middle" class="component-text">状态管理</text>
+    <rect x="912" y="243" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="259" text-anchor="middle" class="component-text">事件处理</text>
+    <!-- 箭头 -->
+    <polygon points="590,301 610,301 600,316" 
+             fill="#2E4A62" />
+    
+    <!-- 场景管理层 (Scenario Management Layer) -->
+    <rect x="50" y="306" width="1100" height="103" 
+          fill="#F5A623" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="336" class="layer-title">场景管理层 (Scenario Management Layer)</text>
+    
+    <rect x="80" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="372" text-anchor="middle" class="component-text">场景生命周期</text>
+    <rect x="288" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="372" text-anchor="middle" class="component-text">版本管理</text>
+    <rect x="496" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="372" text-anchor="middle" class="component-text">发布管理</text>
+    <rect x="704" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="372" text-anchor="middle" class="component-text">回滚管理</text>
+    <rect x="912" y="356" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="372" text-anchor="middle" class="component-text">场景监控</text>
+    <!-- 箭头 -->
+    <polygon points="590,414 610,414 600,429" 
+             fill="#2E4A62" />
+    
+    <!-- 执行框架层 (Execution Framework Layer) -->
+    <rect x="50" y="419" width="1100" height="103" 
+          fill="#BD10E0" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="449" class="layer-title">执行框架层 (Execution Framework Layer)</text>
+    
+    <rect x="80" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="485" text-anchor="middle" class="component-text">任务调度器</text>
+    <rect x="288" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="485" text-anchor="middle" class="component-text">执行容器</text>
+    <rect x="496" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="485" text-anchor="middle" class="component-text">资源管理</text>
+    <rect x="704" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="485" text-anchor="middle" class="component-text">负载均衡</text>
+    <rect x="912" y="469" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="485" text-anchor="middle" class="component-text">故障恢复</text>
+    <!-- 箭头 -->
+    <polygon points="590,527 610,527 600,542" 
+             fill="#2E4A62" />
+    
+    <!-- 数据存储层 (Data Storage Layer) -->
+    <rect x="50" y="532" width="1100" height="103" 
+          fill="#B8E986" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="562" class="layer-title">数据存储层 (Data Storage Layer)</text>
+    
+    <rect x="80" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="598" text-anchor="middle" class="component-text">场景定义库</text>
+    <rect x="288" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="598" text-anchor="middle" class="component-text">执行状态库</text>
+    <rect x="496" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="598" text-anchor="middle" class="component-text">历史记录库</text>
+    <rect x="704" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="598" text-anchor="middle" class="component-text">配置存储</text>
+    <rect x="912" y="582" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="598" text-anchor="middle" class="component-text">日志存储</text>
+    <!-- 箭头 -->
+    <polygon points="590,640 610,640 600,655" 
+             fill="#2E4A62" />
+    
+    <!-- 基础服务层 (Foundation Services Layer) -->
+    <rect x="50" y="645" width="1100" height="103" 
+          fill="#50E3C2" class="layer-rect" filter="url(#shadow)" />
+    
+    <!-- 层标题 -->
+    <text x="70" y="675" class="layer-title">基础服务层 (Foundation Services Layer)</text>
+    
+    <rect x="80" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="179" y="711" text-anchor="middle" class="component-text">认证服务</text>
+    <rect x="288" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="387" y="711" text-anchor="middle" class="component-text">权限控制</text>
+    <rect x="496" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="595" y="711" text-anchor="middle" class="component-text">审计日志</text>
+    <rect x="704" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="803" y="711" text-anchor="middle" class="component-text">监控告警</text>
+    <rect x="912" y="695" width="198" height="33" 
+          fill="rgba(255,255,255,0.2)" class="component-rect" />
+    
+    <text x="1011" y="711" text-anchor="middle" class="component-text">配置中心</text>
+</svg>
